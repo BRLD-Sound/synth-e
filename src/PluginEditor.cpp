@@ -16,6 +16,8 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     midiVolume.setPopupDisplayEnabled(true, false, this);
     midiVolume.setTextValueSuffix("Volume");
     midiVolume.setValue(1.0);
+    // add the listener to the slider
+    midiVolume.addListener(this);
     // add slider to editor
     addAndMakeVisible(&midiVolume);
 }
@@ -28,15 +30,22 @@ AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::white);
+    g.fillAll (juce::Colours::white);
+    // set current drawing color to black
+    g.setColour (juce::Colours::black);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("Midi Volume", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+
+    // set position of slider
+    midiVolume.setBounds(40, 30, 20, getHeight() - 60);
+}
+
+void AudioPluginAudioProcessorEditor::sliderValueChanged (juce::Slider* slider) {
+    processorRef.noteOnVel = midiVolume.getValue();
 }
