@@ -8,7 +8,16 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (500, 500);
+    // volume slider object
+    midiVolume.setSliderStyle(juce::Slider::LinearBarVertical);
+    midiVolume.setRange(0.0, 127.0, 1.0);
+    midiVolume.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    midiVolume.setPopupDisplayEnabled(true, false, this);
+    midiVolume.setTextValueSuffix("Volume");
+    midiVolume.setValue(1.0);
+    // add slider to editor
+    addAndMakeVisible(&midiVolume);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
